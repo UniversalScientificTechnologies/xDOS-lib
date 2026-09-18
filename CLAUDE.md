@@ -22,12 +22,15 @@ platformio.ini    test project of the library only, env "native"
 src/              pure logic, no Arduino headers — built and tested on the PC
 src/arduino/      Arduino glue (Stream, Wire, watchdog) — excluded from native
 test/             Unity tests, one folder per test suite
+tools/            host side tools (Python) and their unittest tests
+docs/             design documents, one per topic (CONFIG_BRIDGE.md)
 ```
 
 ## Build and test
 
 ```bash
-pio test -e native
+pio test -e native                      # C++ pure logic
+python3 -m unittest discover -s tools   # host tools
 ```
 
 Needs xDOS-versions checked out next to this repository (`../xDOS-versions`);

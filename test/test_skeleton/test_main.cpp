@@ -13,7 +13,7 @@ void tearDown() {}
 
 static void test_library_version_is_set()
 {
-    TEST_ASSERT_EQUAL_STRING("0.1.0", xdos::libraryVersion());
+    TEST_ASSERT_EQUAL_STRING("0.2.0", xdos::libraryVersion());
 }
 
 static void test_eeprom_record_size()
