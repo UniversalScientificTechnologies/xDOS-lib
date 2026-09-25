@@ -9,8 +9,9 @@ copy from each other:
 | part | status |
 |---|---|
 | UART → I2C configuration bridge and config mode — lets dosview read and write the device EEPROM and RTC over the data serial line, see [docs/CONFIG_BRIDGE.md](docs/CONFIG_BRIDGE.md) | done |
-| EEPROM configuration record — reading, CRC check, format version handling | planned |
-| Header of the [xDOS data format v2.1](https://docs.dos.ust.cz/xdos_format) (`$DATAFORMAT`, `$DOS`, `$ADC`, `$CALIB`, `$CHAN`, …) | planned |
+| EEPROM configuration record — reading over I2C, CRC check (the same CRC as dosview), format version handling, age of the RTC sync record | done |
+| Header of the [xDOS data format v2.1](https://docs.dos.ust.cz/xdos_format) (`$DATAFORMAT`, `$DOS`, `$ADC`, `$CALIB`, `$CHAN`, …, `$ERROR`) from the EEPROM record | done |
+| Unix time from a calendar RTC | done |
 
 The EEPROM record layout itself is not defined here but in
 [xDOS-versions](https://github.com/UniversalScientificTechnologies/xDOS-versions).
@@ -32,7 +33,13 @@ lib_deps =
 
 ```cpp
 #include <xdos.h>
+#include <xdos_header.h>               // writeHeader(), LineSink
+#include <arduino/xdos_eeprom_io.h>    // readRecord(), readSerialNumber()
 ```
+
+`writeHeader()` emits the header line by line into a `LineSink` the firmware
+implements (write to the SD card, a serial port, a `String`, …); the firmware
+adds its own lines such as `$RTCCHK` and `$TIME` after it.
 
 The library does not declare xDOS-versions as a dependency — the firmware
 project provides it, so both always come from the commits pinned by the

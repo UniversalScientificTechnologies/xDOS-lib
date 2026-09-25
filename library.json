@@ -1,6 +1,6 @@
 {
   "name": "xDOS-lib",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Shared firmware code for UST xDOS dosimeters: UART to I2C configuration bridge, EEPROM record handling and xDOS data format output.",
   "keywords": "xdos, dosimeter, airdos, spacedos, labdos, eeprom, i2c",
   "repository": {

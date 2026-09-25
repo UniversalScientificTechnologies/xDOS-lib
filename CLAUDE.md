@@ -42,9 +42,11 @@ does not declare it as a dependency — the firmware project provides it.
 - Keep pure logic (parsing, checksums, CRC, record validation, text
   formatting) free of Arduino headers so it runs in `pio test -e native`.
   Hardware access goes to `src/arduino/`.
-- Output goes through Arduino's `Print&`, never through `String` — the target
-  has 16 kB of RAM and the firmwares already use a large part of it for event
-  buffers. Tests replace `Print` with a small stub collecting the text.
+- Output goes line by line through `LineSink` (`src/xdos_header.h`), never
+  through `String` — the target has 16 kB of RAM and the firmwares already use
+  a large part of it for event buffers. Tests use a sink collecting the lines.
+- Text constants in code that runs on AVR go to flash (`PSTR`, see `XP()` in
+  `src/xdos_header.cpp`); string literals would otherwise cost RAM.
 - C++11 only (`-std=gnu++11` in the native env mirrors avr-gcc); no exceptions,
   no RTTI, no dynamic allocation.
 - Do not use `KNOWN_DEVICES` from xDOS-versions in device code: the table is
